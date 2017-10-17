@@ -1,0 +1,14 @@
+name: "clipboard"
+
+platforms:
+  x86_64-osx:
+    context:
+        frameworks: ["AppKit"]
+
+  x86-osx:
+    context:
+        frameworks: ["AppKit"]
+
+  armv7-ios:
+    context:
+        frameworks: ["UIKit"]
