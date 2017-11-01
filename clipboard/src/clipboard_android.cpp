@@ -51,26 +51,25 @@ void clipboard_to_clipboard(const char* text) {
 	// prepare JNI
 	AttachScope attachscope;
 	JNIEnv* env = attachscope.m_Env;
-	jclass cls = GetClass(env, "com.britzl.defold.ClipboardExtension");
+	jclass cls = GetClass(env, "com.britzl.defold.clipboard.ClipboardExtension");
 
 	// call method
-	jmethodID to_clipboard = env->GetStaticMethodID(cls, "ToClipboard", "(Landroid/content/Context;)V");
-	env->CallStaticVoidMethod(cls, to_clipboard, dmGraphics::GetNativeAndroidActivity());
-
-	return 1;
+	jmethodID to_clipboard = env->GetStaticMethodID(cls, "ToClipboard", "(Landroid/app/Activity;Ljava/lang/String;)V");
+	env->CallStaticVoidMethod(cls, to_clipboard, dmGraphics::GetNativeAndroidActivity(), env->NewStringUTF(text));
 }
 
 const char* clipboard_from_clipboard() {
 	// prepare JNI
 	AttachScope attachscope;
 	JNIEnv* env = attachscope.m_Env;
-	jclass cls = GetClass(env, "com.britzl.defold.ClipboardExtension");
+	jclass cls = GetClass(env, "com.britzl.defold.clipboard.ClipboardExtension");
 
 	// call method
-	jmethodID from_clipboard = env->GetStaticMethodID(cls, "FromClipboard", "(Landroid/content/Context;)V");
-	env->CallStaticVoidMethod(cls, from_clipboard, dmGraphics::GetNativeAndroidActivity());
+	jmethodID from_clipboard = env->GetStaticMethodID(cls, "FromClipboard", "(Landroid/app/Activity;)Ljava/lang/String;");
+	jstring s = (jstring)env->CallStaticObjectMethod(cls, from_clipboard, dmGraphics::GetNativeAndroidActivity());
 
-	return 1;
+	const char *str = env->GetStringUTFChars(s, 0);
+	return str;
 }
 
 #endif
