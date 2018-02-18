@@ -1,3 +1,5 @@
+![](logo.png)
+
 # Defold Clipboard
 [Defold](https://www.defold.com) native extension to access the clipboard.
 
