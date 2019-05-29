@@ -4,7 +4,7 @@
 [Defold](https://www.defold.com) native extension to access the clipboard.
 
 ## System requirements
-The extension currently supports OSX, Windows, iOS and Android. Linux support will be added once Defold native extensions are supported on that OS.
+The extension currently supports OSX, Windows, iOS and Android.
 
 ## Limitations
 The extension will not support HTML5 as clipboard access is restricted in browsers due to security reasons.
