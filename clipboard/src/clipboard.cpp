@@ -57,6 +57,29 @@ dmExtension::Result FinalizeClipboard(dmExtension::Params* params)
     return dmExtension::RESULT_OK;
 }
 
-DM_DECLARE_EXTENSION(EXTENSION_NAME, LIB_NAME, AppInitializeClipboard, AppFinalizeClipboard, InitializeClipboard, 0, 0, FinalizeClipboard)
+#else
+
+static dmExtension::Result AppInitializeClipboard(dmExtension::AppParams* params)
+{
+    dmLogWarning("Registered %s (null) Extension\n", MODULE_NAME);
+    return dmExtension::RESULT_OK;
+}
+
+static dmExtension::Result InitializeClipboard(dmExtension::Params* params)
+{
+    return dmExtension::RESULT_OK;
+}
+
+static dmExtension::Result AppFinalizeClipboard(dmExtension::AppParams* params)
+{
+    return dmExtension::RESULT_OK;
+}
+
+static dmExtension::Result FinalizeClipboard(dmExtension::Params* params)
+{
+    return dmExtension::RESULT_OK;
+}
 
 #endif
+
+DM_DECLARE_EXTENSION(EXTENSION_NAME, LIB_NAME, AppInitializeClipboard, AppFinalizeClipboard, InitializeClipboard, 0, 0, FinalizeClipboard)
