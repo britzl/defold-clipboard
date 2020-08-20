@@ -12,3 +12,8 @@ platforms:
   armv7-ios:
     context:
         frameworks: ["UIKit"]
+
+  x86_64-linux:
+    context:
+        frameworks: ["X11", "Xrender"]
+        libs: ["Xrender", "Xfixes"]
