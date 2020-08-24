@@ -7,21 +7,24 @@
 
 #include <X11/Xlib.h>
 
-#define THREAD_IMPLEMENTATION
-#include "thread.h"
+#include <dmsdk/dlib/thread.h>
+#include <dmsdk/dlib/mutex.h>
 
 Display * display;
 Window window;
 Atom UTF8, XA_STRING = 31, selection;
+dmThread::Thread loop_thread;
+dmMutex::HMutex mutex;
 const char* cur_text;
 bool exit_flag;
-thread_ptr_t loop_thread;
 
-int EventLoop(void* user_data) {
+void EventLoop(void* user_data) {
     XEvent event;
     while (!exit_flag) {
         if (XCheckTypedEvent(display, SelectionClear, &event)) {
+            dmMutex::Lock(mutex);
             cur_text = 0;
+            dmMutex::Unlock(mutex);
         }
         if (XCheckTypedEvent(display, SelectionRequest, &event)) {
             if (cur_text == 0) continue;
@@ -47,7 +50,6 @@ int EventLoop(void* user_data) {
             if ((R & 2) == 0) XSendEvent(display, ev.requestor, 0, 0, (XEvent*)&ev);
         }
     }
-    return 0;
 }
 
 void InitializeLinuxClipboard() {
@@ -56,13 +58,14 @@ void InitializeLinuxClipboard() {
     window = XCreateSimpleWindow(display, RootWindow(display, N), 0, 0, 1, 1, 0,
         BlackPixel(display, N), WhitePixel(display, N));
     exit_flag = 0;
-    loop_thread = thread_create(EventLoop, 0, "clipboard_eventloop", THREAD_STACK_SIZE_DEFAULT);
+    mutex = dmMutex::New();
+    loop_thread = dmThread::New(EventLoop, 0x80000, 0, "clipboard_eventloop");
 }
 
 void FinalizeLinuxClipboard() {
     exit_flag = 1;
-    thread_join(loop_thread);
-    thread_destroy(loop_thread);
+    dmThread::Join(loop_thread);
+    dmMutex::Delete(mutex);
     XDestroyWindow(display, window);
     XCloseDisplay(display);
 }
@@ -71,7 +74,9 @@ void clipboard_to_clipboard(const char* text) {
     selection = XInternAtom(display, "CLIPBOARD", 0);
     XSetSelectionOwner(display, selection, window, 0);
     if (XGetSelectionOwner(display, selection) != window) return;
+    dmMutex::Lock(mutex);
     cur_text = text;
+    dmMutex::Unlock(mutex);
 }
 
 char * XPasteType(Atom atom) {
