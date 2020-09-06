@@ -5,7 +5,7 @@
 #define DLIB_LOG_DOMAIN LIB_NAME
 #include <dmsdk/sdk.h>
 
-#if defined(DM_PLATFORM_OSX) || defined(DM_PLATFORM_WINDOWS) || defined(DM_PLATFORM_ANDROID) || defined(DM_PLATFORM_IOS)
+#if defined(DM_PLATFORM_OSX) || defined(DM_PLATFORM_WINDOWS) || defined(DM_PLATFORM_LINUX) || defined(DM_PLATFORM_ANDROID) || defined(DM_PLATFORM_IOS)
 
 #include "clipboard_private.h"
 
@@ -44,11 +44,17 @@ dmExtension::Result AppInitializeClipboard(dmExtension::AppParams* params)
 dmExtension::Result InitializeClipboard(dmExtension::Params* params)
 {
     LuaInit(params->m_L);
+    #if defined(DM_PLATFORM_LINUX)
+    InitializeLinuxClipboard();
+    #endif
     return dmExtension::RESULT_OK;
 }
 
 dmExtension::Result AppFinalizeClipboard(dmExtension::AppParams* params)
 {
+    #if defined(DM_PLATFORM_LINUX)
+    FinalizeLinuxClipboard();
+    #endif
     return dmExtension::RESULT_OK;
 }
 
