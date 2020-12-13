@@ -1,7 +1,7 @@
 [project]
 title = Clipboard
 version = 1.0.1
-dependencies = https://github.com/britzl/gooey/archive/master.zip
+dependencies = https://github.com/britzl/gooey/archive/8.1.1.zip
 write_log = 1
 
 [bootstrap]
@@ -31,4 +31,3 @@ bundle_identifier = com.britzl.defold.clipboard
 
 [osx]
 bundle_identifier = com.britzl.defold.clipboard
-
