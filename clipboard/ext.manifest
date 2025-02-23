@@ -1,19 +1,15 @@
 name: "clipboard"
 
 platforms:
-  x86_64-osx:
+  osx:
     context:
         frameworks: ["AppKit"]
 
-  x86-osx:
-    context:
-        frameworks: ["AppKit"]
-
-  armv7-ios:
+  ios:
     context:
         frameworks: ["UIKit"]
 
-  x86_64-linux:
+  linux:
     context:
         frameworks: ["X11", "Xrender"]
         libs: ["Xrender", "Xfixes"]
