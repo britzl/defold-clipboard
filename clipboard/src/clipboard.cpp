@@ -1,3 +1,9 @@
+/**
+ * Defold native extension to access the clipboard
+ * @document
+ * @namespace clipboard
+ */
+
 #define EXTENSION_NAME clipboard
 #define LIB_NAME "clipboard"
 #define MODULE_NAME "clipboard"
@@ -8,12 +14,22 @@
 
 #include "clipboard_private.h"
 
+/**
+ * Copy text to the clipboard.
+ * @name copy
+ * @string text
+ */
 static int copy_to_clipboard(lua_State* L) {
     const char* str = luaL_checkstring(L, 1);
     clipboard_to_clipboard(str);
     return 0;
 }
 
+/**
+ * Get text from the clipboard.
+ * @name paste
+ * @treturn string text
+ */
 static int paste_from_clipboard(lua_State* L) {
     const char* text = clipboard_from_clipboard();
     lua_pushstring(L, text);

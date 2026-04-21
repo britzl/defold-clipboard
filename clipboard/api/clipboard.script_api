@@ -1,16 +1,22 @@
+# This is a generated file. Do not modify. Created using https://github.com/britzl/generatedocs
 - name: clipboard
   type: table
   desc: Defold native extension to access the clipboard
+
   members:
-    - name: copy
-      type: function
-      desc: Copy text to the clipboard.
-      parameters:
-        - name: text
-          type: string
-    - name: paste
-      type: function
-      desc: Get text from the clipboard.
-      returns:
-        - name: text
-          type: string
+  - name: copy
+    type: function
+    desc: |
+      Copy text to the clipboard.
+    parameters:
+    - name: text
+      type: string
+
+  - name: paste
+    type: function
+    desc: |
+      Get text from the clipboard.
+    returns:
+    - name: text
+      type: string
+
